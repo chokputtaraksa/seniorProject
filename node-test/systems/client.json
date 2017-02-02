@@ -1,0 +1,10 @@
+{
+  "id": "6TKpT1Ko1eyAGjocTFQZWW71xN5MNB",
+  "secret": "W5DYZiC7OqzJOo9KU7kolQGdop0JzK",
+  "tokenHost": "https://api.hexoskin.com",
+  "tokenPath": "/api/connect/oauth2/token/",
+  "authorizePath": "/api/connect/oauth2/auth/",
+  "redirect_uri": "https://localhost:3001/callback",
+  "scope": "readwrite",
+  "state": "6145605",
+}

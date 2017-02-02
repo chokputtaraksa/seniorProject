@@ -1,0 +1,21 @@
+{
+  "name": "node-test",
+  "version": "1.0.0",
+  "description": "to create oauth2 server",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "author": "Rattapum Puttaraksa",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "fitbit-node": "^2.0.5",
+    "oauth2orize": "^1.7.0",
+    "request": "^2.79.0",
+    "simple-oauth2": "^1.0.3"
+  }
+}
