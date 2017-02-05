@@ -43,7 +43,7 @@ exports.normalizeHexoHR = function(jsonData,userID){
     hrs = jsonData['data']['19'];
     for(index in hrs){
       if(hrs[index][1] != null){
-        var date_time = mylib.HSTStoUTC(hrs[index][0]);
+        var date_time = mylib.toUnixTimeStamp(mylib.HSTStoUTC(hrs[index][0]));
         var hrValue = hrs[index][1];
         var hr = new heartrate(userID, hrValue, "Hexoskin", date_time);
         hrList.push(hr);

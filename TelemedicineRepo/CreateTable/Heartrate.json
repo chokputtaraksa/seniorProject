@@ -1,61 +1,9 @@
 
 [
   {
-    "date_time":  "2017-01-28T20:19:04Z",
+    "date_time":  1485961968,
     "tool":  "Hexoskin",
     "uid": 1,
     "value": 136
-  },
-  {
-    "date_time":  "2017-01-28T20:19:05Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 136
-  },
-  { "date_time":  "2017-01-28T20:19:06Z",
-     "tool":  "Hexoskin",
-     "uid": 1,
-     "value": 136
-  },
-  { "date_time":  "2017-01-28T20:19:07Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 136
-  },
-  {
-    "date_time":  "2017-01-28T20:19:08Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 136
-  },
-  {
-    "date_time":  "2017-01-28T20:19:09Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 136
-  },
-  {
-    "date_time":  "2017-01-28T20:19:10Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 136
-  },
-  {
-    "date_time":  "2017-01-28T20:19:11Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 128
-  },
-  {
-    "date_time":  "2017-01-28T20:19:12Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 123
-  },
-  {
-    "date_time":  "2017-01-28T20:19:13Z",
-    "tool":  "Hexoskin",
-    "uid": 1,
-    "value": 115
   }
 ]
