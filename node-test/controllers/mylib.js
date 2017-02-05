@@ -12,21 +12,18 @@ exports.toHexoSkinTimestamp = function(date_time){// date_time: YYYY-MM-DDTHH:MM
 }
 
 exports.toUnixTimeStamp = function(date_time){
-  // console.log(date_time);
+  console.log(date_time);
   if(date_time == 'undefined') return new Error("No data content");
   try{
-    var date = new Date(date_time.substr(0,4),date_time.substr(5,2)-1,date_time.substr(8,2));
-    date.setHours(date_time.substr(11,2));
-    date.setMinutes(date_time.substr(14,2));
-    date.setSeconds(date_time.substr(17,2));
+    var date = new Date(Date.UTC(date_time.substr(0,4),date_time.substr(5,2)-1,date_time.substr(8,2), date_time.substr(11,2), date_time.substr(14,2), date_time.substr(17,2)));
   }catch(error){
     return new Error(error);
   }
-    // console.log(date);
+    console.log(date);
     return Math.floor(date / 1000);
 }
 
-exports.toCurrentUnixTimeStamp = function(date_time){
+exports.localToUnixTimeStamp = function(date_time){
   // console.log(date_time);
   if(date_time == 'undefined') return new Error("No data content");
   try{

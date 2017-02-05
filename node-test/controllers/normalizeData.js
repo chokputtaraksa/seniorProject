@@ -23,7 +23,7 @@ exports.normalizeFitbitHR = function(jsonData,userID){
       var date_time = date + "T" + time + "Z"
       var hrValue = hrs[i]['value'];
       // console.log("Time : " +date_time + " Value : " + hrValue);
-      var hr = new heartrate(userID, hrValue, "Fitbit", mylib.toCurrentUnixTimeStamp(date_time));
+      var hr = new heartrate(userID, hrValue, "Fitbit", mylib.localToUnixTimeStamp(date_time));
       // console.log(hr);
       HRList.push(hr);
       // HRList.push(hrs[i]['value']);

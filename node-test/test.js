@@ -30,7 +30,7 @@ var data = [
 
 console.log(data[0]['data']['19'][1][1]);
 
-var start = mylib.HSTStoUTC(380296339365);
-var end = mylib.HSTStoUTC(380314330880);
+var start = mylib.HSTStoUTC(380270000190);
+var end = mylib.toUnixTimeStamp(mylib.HSTStoUTC(380270898238));
 console.log("start : " + start);
 console.log("end : " + end);
