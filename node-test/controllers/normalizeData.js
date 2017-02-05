@@ -5,7 +5,7 @@ var heartrate = require('../models/heartrate.js');
 
 
 exports.normalizeFitbitHR = function(jsonData,userID){
-  //console.log(jsonData);
+  // console.log(jsonData);
   var HRList = [];
   // var date = hrs['activities-heart']['dateTime'];
   // console.log(date);
@@ -20,10 +20,10 @@ exports.normalizeFitbitHR = function(jsonData,userID){
     for(var i=0; i < hrs.length; i++){
       //console.log("HR = " + hrs[i]['value']);
       var time = hrs[i]['time'];
-      var date_time = date + "T" + time + "+07:00"
+      var date_time = date + "T" + time + "Z"
       var hrValue = hrs[i]['value'];
       // console.log("Time : " +date_time + " Value : " + hrValue);
-      var hr = new heartrate(userID, hrValue, "Fitbit", date_time);
+      var hr = new heartrate(userID, hrValue, "Fitbit", mylib.toCurrentUnixTimeStamp(date_time));
       // console.log(hr);
       HRList.push(hr);
       // HRList.push(hrs[i]['value']);

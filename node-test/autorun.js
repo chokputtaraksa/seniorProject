@@ -4,58 +4,58 @@ var fs = require('fs');
     mylib = require('./controllers/mylib');
     systems = './systems/userToken.json';
     normalizeData = require('./controllers/normalizeData');
+    FitbitApiClient = require("fitbit-node"),
     setInterval(function(){
       content = fs.readFileSync(systems);
       jsonContent = JSON.parse(content);
+      content = fs.readFileSync('./systems/userTokenfb.json');
+      fitbitContent = JSON.parse(content);
     },4500);
     // console.log(jsonContent);
 // // still error
 //
-// setInterval(function() {// do something every period(24 secs)
-//   console.log("Query!!");
-//
-//   if(mode = "profile" && getAccessToken != ""){
-//
-//     client.get("/profile.json", getAccessToken).then(function (results) {
-//         // sent result to DB
-//     });
-//   }
-//
-//   if(mode = "heartrate" && getAccessToken != ""){
-//     var delayTime = 15;
-//     var now = new Date();
-//     var date = now.toISOString().substr(0, 10);
-//     // get time
-//     var toHour = now.getHours();
-//     // if(toHour<10) toHour = "0"+toHour;
-//     var toMinute = now.getMinutes();
-//     // if(toMinute<10) toMinute = "0"+toMinute;
-//     var fromTime = getFromTime(toMinute, toHour, delayTime);
-//     // console.log("Old" + fromHour + ":" + fromMinute);
-//     // console.log("New" + fromTime);
-//
-//     // jsonReq Example: /activities/heart/date/2016-11-14/1d/1sec/time/20:23/20:28.json
-//     jsonReq =   "/activities/heart/date/"+ date +"/1d/1sec/time/"+ fromHour+":"+fromMinute+"/"+ toHour+":"+toMinute+".json";
-//     client.get(jsonReq, getAccessToken).then(function (results) {
-//       // console.log(results[0]);
-//       if(results[0]['activities-heart-intraday']['dataset'].length != 0){
-//         var nomalizeJson = [];
-//         nomalizeJson = normalizeData.normalizeFitbitHR(results[0], getUserID);
-//         httptoServer("http://127.0.0.1:5000/saveHR", "POST", nomalizeJson, function(err, res){
-//           if(!err) console.log("Success!");
-//         });
-//       }else{
-//         console.log("It doesn't have any data in This query");
-//       }
-//     });
-//   }
-// }, 5000);// 1 HR can call only 150 requests, if exceed we will be blocked.
+var client_id = "227ZYG";
+    secret_id = "8df3c4865e35901f964c090f99213bcf"
+    client = new FitbitApiClient(client_id, secret_id);
+setInterval(function() {// do something every period(24 secs)
+  // console.log("Query!!");
+  var delayTime = 10;
+  var now = new Date();
+  var date = now.toISOString().substr(0, 10);
+  // get time
+  var toHour = now.getHours();
+  // if(toHour<10) toHour = "0"+toHour;
+  var toMinute = now.getMinutes();
+    // if(toMinute<10) toMinute = "0"+toMinute;
+  var fromTime = getFromTime(toMinute, toHour, delayTime);
+  // console.log("Old" + toHour + ":" + toMinute);
+  // console.log("New" + fromTime);
+  // jsonReq Example: /activities/heart/date/2016-11-14/1d/1sec/time/20:23/20:28.json
+  jsonReq =   "/activities/heart/date/"+ date +"/1d/1sec/time/"+ fromTime +"/"+ toHour+":"+toMinute+".json";
+  // console.log("/activities/heart/date/"+ date +"/1d/1sec/time/"+ fromTime +"/"+ toHour+":"+toMinute+".json");
+  client.get(jsonReq, fitbitContent.access_token).then(function (results) {
+    // console.log(results[0]['activities-heart-intraday']['dataset']);
+    if(results[0]['activities-heart-intraday']['dataset'].length != 0){
+      var nomalizeJson = [];
+          uid = 1;
+      // console.log(results[0]);
+      nomalizeJson = normalizeData.normalizeFitbitHR(results[0], uid);
+      // console.log(nomalizeJson);
+      httptoServer("http://127.0.0.1:5000/saveHR", "POST", nomalizeJson, function(err, res){
+        if(!err) console.log("Success!");
+      });
+    }else{
+      console.log("Fitbit don't have data.");
+    }
+  });
+}, 5000);// 1 HR can call only 150 requests, if exceed we will be blocked.
 //so 1hr = 3600 seconds, 24 seconds will request 1 time.
-//
+
 setInterval(function() {// do something every period(24 secs)
   var date = new Date();
   var now = mylib.toUnixTimeStamp(date.toISOString());
   var expire = mylib.toUnixTimeStamp(jsonContent.expires_at);
+  // Use refresh token to get new access token
   // if(now >= expire){
   //   // console.log(jsonContent.refresh_token);
   //   // console.log(date);
@@ -80,7 +80,7 @@ setInterval(function() {// do something every period(24 secs)
   //   console.log("expires_token");
   // }else{
     var toTime = mylib.toHexoSkinTimestamp(date.toISOString());
-    date.setHours(date.getHours()-60);
+    date.setMinutes(date.getMinutes()-10);
     var fromTime = mylib.toHexoSkinTimestamp(date.toISOString());
     // console.log(toTime + " " + fromTime);
     var data = {
@@ -97,7 +97,7 @@ setInterval(function() {// do something every period(24 secs)
       if(err) console.log(err);
       // console.log(res);
       if(res == "[]"){
-        console.log("No data");
+        console.log("Hexoskin don't have data.");
       }else{
         var data = JSON.parse(res);
         // console.log(data[0]);
@@ -115,6 +115,7 @@ setInterval(function() {// do something every period(24 secs)
     });
   // }
 }, 10000);
+
 
 function getFromTime(toMinute, toHour, delayTime){
   if(toMinute<delayTime){

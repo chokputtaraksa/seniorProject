@@ -25,28 +25,22 @@ var client_id = "227ZYG";
     host = "localhost:3000/"
 // initialize the Fitbit API client
 var FitbitApiClient = require("fitbit-node"),
-    client;
+    access;
 
     // get code for request access token
 app.get("/authfb", function (req, res) {
-  client = new FitbitApiClient(client_id, secret_id);
-  res.redirect(client.getAuthorizeUrl('activity heartrate location nutrition profile settings sleep social weight', redirect_urlfb));
+  access = new FitbitApiClient(client_id, secret_id);
+  res.redirect(access.getAuthorizeUrl('activity heartrate location nutrition profile settings sleep social weight', redirect_urlfb));
 });
 
 app.get("/callback", function (req, res) {
-
   // exchange the authorization code we just received for an access token
-  client.getAccessToken(req.query.code, redirect_urlfb).then(function (result) {
-    // console.log("Heyyyy");
+  access.getAccessToken(req.query.code, redirect_urlfb).then(function (result) {
     // use the access token to fetch the user's profile information
     // get important key
-    // var getUserID = result.user_id;
-    // var getRefreshToken = result.refresh_token;
-    // var getAccessToken = result.access_token;
-    // var getExpiredTime = result.expires_in;
     var uid = 1111; // will create user management soon
     result.uid = uid;
-    // console.log(token);
+    console.log(result);
     fs.writeFile('./systems/userTokenfb.json',JSON.stringify(result),function(err){
 		    if(err) throw err;
         res.send("ok");

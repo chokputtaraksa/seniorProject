@@ -26,6 +26,21 @@ exports.toUnixTimeStamp = function(date_time){
     return Math.floor(date / 1000);
 }
 
+exports.toCurrentUnixTimeStamp = function(date_time){
+  // console.log(date_time);
+  if(date_time == 'undefined') return new Error("No data content");
+  try{
+    var date = new Date(date_time.substr(0,4),date_time.substr(5,2)-1,date_time.substr(8,2));
+    date.setHours(date_time.substr(11,2));
+    date.setMinutes(date_time.substr(14,2));
+    date.setSeconds(date_time.substr(17,2));
+  }catch(error){
+    return new Error(error);
+  }
+    // console.log(date);
+    return Math.floor(date / 1000);
+}
+
 exports.HSTStoUTC = function(hexoTimestamp){ //3xxxxxxxxxxx
   if(hexoTimestamp == 'undefined') return new Error("No data content");
   return new Date((hexoTimestamp/256)*1000).toISOString().substr(0,19) + "Z";
