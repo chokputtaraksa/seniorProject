@@ -11,6 +11,12 @@ app.config['DEBUG'] = True
 def index():
     return "Welcome to our Repository!"
 
+# @app.route("/saveBR", methods=['POST'])
+# def saveQuery():
+#     # print request.get_json()
+#     SensorDataRepository.saveHR(request.get_json())
+#     return ('Its complete')
+
 @app.route("/saveHR", methods=['POST'])
 def saveQuery():
     # print request.get_json()

@@ -105,8 +105,15 @@ setInterval(function() {// do something every period(24 secs)
         var nomalizeJsonHr = [];
         normalizeJsonHr = normalizeData.normalizeHexoHR(data[0],1);
         // console.log(normalizeJsonHr);
-        //var nomalizeJsonBr = normalizeData.normalizeHexoBR(res[0]);
         mylib.postJson("http://127.0.0.1:5000/saveHR", normalizeJsonHr, function(err, res){
+          if(err) console.log(err);
+          // console.log("success");
+          else console.log(res);
+        });
+        var nomalizeJsonBr = [];
+        nomalizeJsonBr = normalizeData.normalizeHexoBR(res[0]);
+        console.log(nomalizeJsonBr);
+        mylib.postJson("http://127.0.0.1:5000/saveBR", nomalizeJsonBr, function(err, res){
           if(err) console.log(err);
           // console.log("success");
           else console.log(res);

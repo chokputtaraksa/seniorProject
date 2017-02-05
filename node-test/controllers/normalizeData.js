@@ -62,9 +62,9 @@ exports.normalizeHexoBR = function(jsonData, userID){
   try{
     brs = jsonData['data']['33'];
     for(index in brs){
-      var date_time = mylib.HSTStoUTC(brs[index][0]);
+      var date_time = mylib.toUnixTimeStamp(mylib.HSTStoUTC(brs[index][0]));
       var brValue = brs[index][1];
-      var br = new heartrate(userID, brValue, date_time);
+      var br = new breathrate(userID, brValue, "Hexoskin", date_time);
       brList.push(br);
     }
   }catch(error){

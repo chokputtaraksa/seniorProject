@@ -56,7 +56,7 @@ def showHRTable():
     return "Show in terminal"
 
 def hrbyId(id_):
-    # print id_
+    # print type(id_);
     queryParquet = "CreateTable/HEARTRATE.parquet"
     queryBaseDF = spark.read.parquet(queryParquet)
     queryBaseDF.createOrReplaceTempView("heartrate")
@@ -66,16 +66,15 @@ def hrbyId(id_):
         return "No data in table"
     date_timeList = hr.rdd.map(lambda p: p.date_time).collect()
     valueList = hr.rdd.map(lambda x: int(x.value)).collect()
-    uidList = hr.rdd.map(lambda x: int(x.uid)).collect()
-    data = {}
     data_list = []
+    data = {}
     for n in range(len(valueList)):
-        data['value'] = valueList[n]
-        data['date_time'] = mylib.toUTCTime(date_timeList[n])
-        data['uid'] = uidList[n]
+        data['heart_rate'] = {'value' : valueList[n], 'unit' : "beats/min" }
+        data['effective_time_frame'] = ({'date_time' : mylib.toUTCTime(date_timeList[n])})
         data_list.append(json.dumps(data))
     return json.dumps(data_list)
         # hr.show()
+        # jsobj["a"]["b"]["e"].append({"f":var3, "g":var4, "h":var5})
 
 def hrbyidtime(id_, time_):
     # print id_
@@ -90,13 +89,11 @@ def hrbyidtime(id_, time_):
         return "No data in table"
     date_timeList = hr.rdd.map(lambda p: p.date_time).collect()
     valueList = hr.rdd.map(lambda x: int(x.value)).collect()
-    uidList = hr.rdd.map(lambda x: int(x.uid)).collect()
     data_list = []
     data = {}
     for n in range(len(valueList)):
-        data['value'] = valueList[n]
-        data['date_time'] = mylib.toUTCTime(date_timeList[n])
-        data['uid'] = uidList[n]
+        data['heart_rate'] = {'value' : valueList[n], 'unit' : "beats/min" }
+        data['effective_time_frame'] = ({'date_time' : mylib.toUTCTime(date_timeList[n])})
         data_list.append(json.dumps(data))
     return json.dumps(data_list)
 
@@ -111,13 +108,12 @@ def hrbyPeriod(id_, start, end):
         hr = spark.sql("SELECT * FROM heartrate WHERE uid == " + id_ +" AND date_time >= " + start + " AND date_time <= " + end)
         date_timeList = hr.rdd.map(lambda p: p.date_time).collect()
         valueList = hr.rdd.map(lambda x: int(x.value)).collect()
-        uidList = hr.rdd.map(lambda x: int(x.uid)).collect()
+
         data_list = []
         data = {}
         for n in range(len(valueList)):
-            data['value'] = valueList[n]
-            data['date_time'] = mylib.toUTCTime(date_timeList[n])
-            data['uid'] = uidList[n]
+            data['heart_rate'] = {'value' : valueList[n], 'unit' : "beats/min" }
+            data['effective_time_frame'] = ({'date_time' : mylib.toUTCTime(date_timeList[n])})
             data_list.append(json.dumps(data))
         return json.dumps(data_list)
     except:
