@@ -5,6 +5,7 @@ var fs = require('fs');
     systems = './systems/userToken.json';
     normalizeData = require('./controllers/normalizeData');
     FitbitApiClient = require("fitbit-node"),
+    jsonContent = {};
     setInterval(function(){
       content = fs.readFileSync(systems);
       jsonContent = JSON.parse(content);
@@ -19,7 +20,7 @@ var client_id = "227ZYG";
     client = new FitbitApiClient(client_id, secret_id);
 setInterval(function() {// do something every period(24 secs)
   // console.log("Query!!");
-  var delayTime = 10;
+  var delayTime = 5;
   var now = new Date();
   var date = now.toISOString().substr(0, 10);
   // get time
@@ -38,7 +39,7 @@ setInterval(function() {// do something every period(24 secs)
     if(results[0]['activities-heart-intraday']['dataset'].length != 0){
       var nomalizeJson = [];
           uid = 1;
-      // console.log(results[0]);
+      console.log("Fitbit"+results[0]);
       nomalizeJson = normalizeData.normalizeFitbitHR(results[0], uid);
       // console.log(nomalizeJson);
       httptoServer("http://127.0.0.1:5000/saveHR", "POST", nomalizeJson, function(err, res){
@@ -54,7 +55,7 @@ setInterval(function() {// do something every period(24 secs)
 setInterval(function() {// do something every period(24 secs)
   var date = new Date();
   var now = mylib.toUnixTimeStamp(date.toISOString());
-  var expire = mylib.toUnixTimeStamp(jsonContent.expires_at);
+  // var expire = mylib.toUnixTimeStamp(jsonContent.expires_at);
   // Use refresh token to get new access token
   // if(now >= expire){
   //   // console.log(jsonContent.refresh_token);
@@ -79,8 +80,10 @@ setInterval(function() {// do something every period(24 secs)
   //
   //   console.log("expires_token");
   // }else{
+    // console.log(date.toISOString());
     var toTime = mylib.toHexoSkinTimestamp(date.toISOString());
-    date.setMinutes(date.getMinutes()-10);
+    date.setSeconds(date.getSeconds()-10);
+    // date.setHours(date.getHours()-1);
     var fromTime = mylib.toHexoSkinTimestamp(date.toISOString());
     // console.log(toTime + " " + fromTime);
     var data = {
@@ -100,28 +103,28 @@ setInterval(function() {// do something every period(24 secs)
         console.log("Hexoskin don't have data.");
       }else{
         var data = JSON.parse(res);
-        // console.log(data[0]);
+        // console.log("Hexoskin "+data[0]);
         // console.log(res);
         var nomalizeJsonHr = [];
         normalizeJsonHr = normalizeData.normalizeHexoHR(data[0],1);
         // console.log(normalizeJsonHr);
         mylib.postJson("http://127.0.0.1:5000/saveHR", normalizeJsonHr, function(err, res){
           if(err) console.log(err);
-          // console.log("success");
+          // else console.log("success");
           else console.log(res);
         });
-        var nomalizeJsonBr = [];
-        nomalizeJsonBr = normalizeData.normalizeHexoBR(res[0]);
-        console.log(nomalizeJsonBr);
-        mylib.postJson("http://127.0.0.1:5000/saveBR", nomalizeJsonBr, function(err, res){
-          if(err) console.log(err);
-          // console.log("success");
-          else console.log(res);
-        });
+        // var nomalizeJsonBr = [];
+        // nomalizeJsonBr = normalizeData.normalizeHexoBR(res[0]);
+        // console.log(nomalizeJsonBr);
+        // mylib.postJson("http://127.0.0.1:5000/saveBR", nomalizeJsonBr, function(err, res){
+        //   if(err) console.log(err);
+        //   // console.log("success");
+        //   else console.log(res);
+        // });
       }
     });
   // }
-}, 10000);
+}, 3000);
 
 
 function getFromTime(toMinute, toHour, delayTime){
